@@ -41,6 +41,7 @@ setlocal enabledelayedexpansion
 :StartPrompt
 echo █████████████████████████████████████████████████████████████████
 echo.
+del /f /q "steamcmd\steamapps\workshop\*.acf" >nul 2>&1
 rd /s /q "steamcmd\steamapps\workshop\downloads" >nul 2>&1
 rd /s /q "steamcmd\steamapps\workshop\temp" >nul 2>&1
 set "URL="
