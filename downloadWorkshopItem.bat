@@ -39,7 +39,7 @@ setlocal enabledelayedexpansion
 
 :StartPrompt
 :: ────────── Prompt for URL ──────────
-echo ██████████████████████████████████████████████████████
+echo █████████████████████████████████████████████████████████████████
 echo.
 rd /s /q "steamcmd\steamapps\workshop\downloads" >nul 2>&1
 rd /s /q "steamcmd\steamapps\workshop\temp" >nul 2>&1
