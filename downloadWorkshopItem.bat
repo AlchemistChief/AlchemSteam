@@ -27,6 +27,8 @@ setlocal enabledelayedexpansion
 
 :StartPrompt
 :: ────────── Prompt for URL ──────────
+rd /s /q "steamcmd\steamapps\workshop\downloads"
+rd /s /q "steamcmd\steamapps\workshop\temp"
 set "URL="
 set /p URL=Enter Steam Workshop Item URL:
 echo.
@@ -82,36 +84,34 @@ set "DESTFOLDER=.downloadedFiles\%Title%"
 :: Wait briefly to ensure download completion
 timeout /t 3 >nul
 
-:: ────────── Ensure Download Folder Exists ──────────
+:: Create .downloadedFiles folder if it doesn't exist
 if not exist ".downloadedFiles" mkdir ".downloadedFiles"
 
-:: ────────── Move and Rename Download ──────────
+:: Move and rename (force overwrite if folder exists)
 if exist "%SRCFOLDER%" (
     if exist "%DESTFOLDER%" (
-        rd /s /q "%DESTFOLDER%"  :: Delete existing destination folder if exists
+        rd /s /q "%DESTFOLDER%"
     )
     move "%SRCFOLDER%" "%DESTFOLDER%" >nul
     echo Moved and renamed to: %DESTFOLDER%
 ) else (
     echo ERROR: Downloaded folder not found at %SRCFOLDER%
-    goto :end
 )
 
-:: ────────── Cleanup: Remove Empty AppID Folder ──────────
+:: Remove empty APPID folder if it exists
 set "APPID_FOLDER=steamcmd\steamapps\workshop\content\%APPID%"
 if exist "%APPID_FOLDER%" (
     rd "%APPID_FOLDER%" 2>nul
 )
 
-:: ────────── Final Confirmation ──────────
+:: Confirm final destination exists before saying complete
+echo.
 if exist "%DESTFOLDER%" (
-    echo.
     echo Cleanup complete. Files are now in: %DESTFOLDER%
 ) else (
-    echo.
     echo ERROR: Final destination folder not found: %DESTFOLDER%
 )
+echo.
 
-:end
-:: ────────── Restart Prompt ──────────
+:: Ask to download another item
 goto StartPrompt
