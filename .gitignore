@@ -1,0 +1,14 @@
+# Ignore everything
+*
+
+# Except these files/folders:
+!.gitignore
+!downloadWorkshopItem.bat
+!README.md
+!LICENSE.md
+!steamcmd/
+!steamcmd/steamcmd.exe
+
+# Allow directories but ignore all inside except steamcmd.exe
+steamcmd/*
+!steamcmd/steamcmd.exe
