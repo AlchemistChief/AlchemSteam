@@ -76,7 +76,7 @@ echo Downloading Workshop item %WorkshopID% for AppID %APPID%...
 steamcmd\steamcmd.exe +login anonymous +workshop_download_item %APPID% %WorkshopID% +quit > steamcmd\steamcmd.log
 
 :: ────────── Post-download file operations ──────────
-set "SRCFOLDER=steamapps\workshop\content\%APPID%\%WorkshopID%"
+set "SRCFOLDER=steamcmd\steamapps\workshop\content\%APPID%\%WorkshopID%"
 set "DESTFOLDER=.downloadedFiles\%Title%"
 
 :: Wait briefly to ensure download completion
@@ -97,7 +97,7 @@ if exist "%SRCFOLDER%" (
 )
 
 :: Remove empty APPID folder if it exists
-set "APPID_FOLDER=steamapps\workshop\content\%APPID%"
+set "APPID_FOLDER=steamcmd\steamapps\workshop\content\%APPID%"
 if exist "%APPID_FOLDER%" (
     rd "%APPID_FOLDER%" 2>nul
 )
