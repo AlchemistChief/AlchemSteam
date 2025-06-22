@@ -82,29 +82,36 @@ set "DESTFOLDER=.downloadedFiles\%Title%"
 :: Wait briefly to ensure download completion
 timeout /t 3 >nul
 
-:: Create .downloadedFiles folder if it doesn't exist
+:: ────────── Ensure Download Folder Exists ──────────
 if not exist ".downloadedFiles" mkdir ".downloadedFiles"
 
-:: Move and rename (force overwrite if folder exists)
+:: ────────── Move and Rename Download ──────────
 if exist "%SRCFOLDER%" (
     if exist "%DESTFOLDER%" (
-        rd /s /q "%DESTFOLDER%"
+        rd /s /q "%DESTFOLDER%"  :: Delete existing destination folder if exists
     )
     move "%SRCFOLDER%" "%DESTFOLDER%" >nul
     echo Moved and renamed to: %DESTFOLDER%
 ) else (
     echo ERROR: Downloaded folder not found at %SRCFOLDER%
+    goto :end
 )
 
-:: Remove empty APPID folder if it exists
+:: ────────── Cleanup: Remove Empty AppID Folder ──────────
 set "APPID_FOLDER=steamcmd\steamapps\workshop\content\%APPID%"
 if exist "%APPID_FOLDER%" (
     rd "%APPID_FOLDER%" 2>nul
 )
 
-echo.
-echo Cleanup complete. Files are now in: %DESTFOLDER%
-echo.
+:: ────────── Final Confirmation ──────────
+if exist "%DESTFOLDER%" (
+    echo.
+    echo Cleanup complete. Files are now in: %DESTFOLDER%
+) else (
+    echo.
+    echo ERROR: Final destination folder not found: %DESTFOLDER%
+)
 
-:: Ask to download another item
+:end
+:: ────────── Restart Prompt ──────────
 goto StartPrompt
