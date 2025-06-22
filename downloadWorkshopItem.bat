@@ -1,4 +1,6 @@
 @echo off
+chcp 65001 >nul
+powershell -NoProfile -Command "exit"
 rem -----------------------------------------------------------------------------
 rem MIT License
 rem
@@ -23,20 +25,29 @@ rem OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN TH
 rem SOFTWARE.
 rem -----------------------------------------------------------------------------
 
+:: =======================================================================
+:: Define ANSCI escape sequences for colors
+for /f %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
+set "RESET=%ESC%[0m"
+set "GOLDCOLOR=%ESC%[1;38;5;220m"
+set "REDCOLOR=%ESC%[1;38;5;196m"
+set "BLUECOLOR=%ESC%[1;38;5;75m"
+set "GREENCOLOR=%ESC%[1;38;5;46m"
+:: =======================================================================
+
 setlocal enabledelayedexpansion
 
 :StartPrompt
 :: ────────── Prompt for URL ──────────
+echo ██████████████████████████████████████████████████████
 rd /s /q "steamcmd\steamapps\workshop\downloads" >nul 2>&1
 rd /s /q "steamcmd\steamapps\workshop\temp" >nul 2>&1
 set "URL="
 set /p URL=Enter Steam Workshop Item URL:
-echo.
 
 :: If no URL entered, ask again
 if "%URL%"=="" (
-    echo ERROR: No URL entered. Please try again.
-    echo.
+    echo %REDCOLOR%[ERROR]%RESET% No URL entered. Please try again.
     goto StartPrompt
 )
 
@@ -44,8 +55,7 @@ if "%URL%"=="" (
 for /f "tokens=2 delims==&" %%I in ("!URL!") do set "ID=%%I"
 
 if not defined ID (
-    echo ERROR: Could not find a numeric id in that URL. Please try again.
-    echo.
+    echo %REDCOLOR%[ERROR]%RESET% Could not find a numeric ID in that URL. Please try again.
     goto StartPrompt
 )
 
@@ -68,13 +78,12 @@ for %%V in (APPID WorkshopID Title) do (
 del temp.txt >nul 2>&1
 
 :: ────────── Show output ──────────
-echo APPID=%APPID%
-echo WorkshopID=%WorkshopID%
-echo Title=%Title%
-echo.
+echo %BLUECOLOR%[INFO]%RESET% APPID=!APPID!
+echo %BLUECOLOR%[INFO]%RESET% WorkshopID=!WorkshopID!
+echo %BLUECOLOR%[INFO]%RESET% Title=!Title!
 
 :: ────────── Download via steamcmd ──────────
-echo Downloading Workshop item %WorkshopID% for AppID %APPID%...
+echo %BLUECOLOR%[INFO]%RESET% Downloading Workshop item !WorkshopID! for AppID !APPID!...
 steamcmd\steamcmd.exe +login anonymous +workshop_download_item %APPID% %WorkshopID% +quit > steamcmd\steamcmd.log
 
 :: ────────── Post-download file operations ──────────
@@ -93,9 +102,9 @@ if exist "%SRCFOLDER%" (
         rd /s /q "%DESTFOLDER%"
     )
     move "%SRCFOLDER%" "%DESTFOLDER%" >nul
-    echo Moved and renamed to: %DESTFOLDER%
+    echo %GREENCOLOR%[SUCCESS]%RESET% Moved and renamed to: %DESTFOLDER%
 ) else (
-    echo ERROR: Downloaded folder not found at %SRCFOLDER%
+    echo %REDCOLOR%[ERROR]%RESET% Downloaded folder not found at %SRCFOLDER%
 )
 
 :: Remove empty APPID folder if it exists
@@ -105,11 +114,10 @@ if exist "%APPID_FOLDER%" (
 )
 
 :: Confirm final destination exists before saying complete
-echo.
 if exist "%DESTFOLDER%" (
-    echo Cleanup complete. Files are now in: %DESTFOLDER%
+    echo %GREENCOLOR%[SUCCESS]%RESET% Cleanup complete. Files are now in: %DESTFOLDER%
 ) else (
-    echo ERROR: Final destination folder not found: %DESTFOLDER%
+    echo %REDCOLOR%[ERROR]%RESET% Final destination folder not found: %DESTFOLDER%
 )
 echo.
 
