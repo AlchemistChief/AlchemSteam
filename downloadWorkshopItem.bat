@@ -37,8 +37,8 @@ set "GREENCOLOR=%ESC%[1;38;5;46m"
 
 setlocal enabledelayedexpansion
 
-:StartPrompt
 :: ────────── Prompt for URL ──────────
+:StartPrompt
 echo █████████████████████████████████████████████████████████████████
 echo.
 rd /s /q "steamcmd\steamapps\workshop\downloads" >nul 2>&1
@@ -88,9 +88,14 @@ echo %BLUECOLOR%[INFO]%RESET% Title=!Title!
 echo %BLUECOLOR%[INFO]%RESET% Downloading Workshop item !WorkshopID! for AppID !APPID!...
 steamcmd\steamcmd.exe +login anonymous +workshop_download_item %APPID% %WorkshopID% +quit > steamcmd\steamcmd.log
 
+:: ────────── Sanitize Title ──────────
+set "TitleSanitized=!Title!"
+set "TitleSanitized=!TitleSanitized:(=[!"
+set "TitleSanitized=!TitleSanitized:)=]!"
+
 :: ────────── Post-download file operations ──────────
 set "SRCFOLDER=steamcmd\steamapps\workshop\content\%APPID%\%WorkshopID%"
-set "DESTFOLDER=.downloadedFiles\%Title%"
+set "DESTFOLDER=.downloadedFiles\%TitleSanitized%"
 
 :: Wait briefly to ensure download completion
 timeout /t 3 >nul
