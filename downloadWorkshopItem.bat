@@ -40,10 +40,12 @@ setlocal enabledelayedexpansion
 :StartPrompt
 :: ────────── Prompt for URL ──────────
 echo ██████████████████████████████████████████████████████
+echo.
 rd /s /q "steamcmd\steamapps\workshop\downloads" >nul 2>&1
 rd /s /q "steamcmd\steamapps\workshop\temp" >nul 2>&1
 set "URL="
-set /p URL=Enter Steam Workshop Item URL:
+echo %GOLDCOLOR%Enter Steam Workshop Item URL:%RESET%
+set /p "URL=> "
 
 :: If no URL entered, ask again
 if "%URL%"=="" (
@@ -115,7 +117,7 @@ if exist "%APPID_FOLDER%" (
 
 :: Confirm final destination exists before saying complete
 if exist "%DESTFOLDER%" (
-    echo %GREENCOLOR%[SUCCESS]%RESET% Cleanup complete. Files are now in: %DESTFOLDER%
+    echo %GREENCOLOR%[SUCCESS]%RESET% Cleanup complete. %GOLDCOLOR%Files are now in: %DESTFOLDER%%RESET%
 ) else (
     echo %REDCOLOR%[ERROR]%RESET% Final destination folder not found: %DESTFOLDER%
 )
