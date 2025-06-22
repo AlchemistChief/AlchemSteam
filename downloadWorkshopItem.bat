@@ -79,19 +79,19 @@ for %%V in (APPID WorkshopID Title) do (
 :: Optional: cleanup
 del temp.txt >nul 2>&1
 
-:: ────────── Show output ──────────
-echo %BLUECOLOR%[INFO]%RESET% APPID=!APPID!
-echo %BLUECOLOR%[INFO]%RESET% WorkshopID=!WorkshopID!
-echo %BLUECOLOR%[INFO]%RESET% Title=!Title!
-
-:: ────────── Download via steamcmd ──────────
-echo %BLUECOLOR%[INFO]%RESET% Downloading Workshop item !WorkshopID! for AppID !APPID!...
-steamcmd\steamcmd.exe +login anonymous +workshop_download_item %APPID% %WorkshopID% +quit > steamcmd\steamcmd.log
-
 :: ────────── Sanitize Title ──────────
 set "TitleSanitized=!Title!"
 set "TitleSanitized=!TitleSanitized:(=[!"
 set "TitleSanitized=!TitleSanitized:)=]!"
+
+:: ────────── Show output ──────────
+echo %BLUECOLOR%[INFO]%RESET% APPID=!APPID!
+echo %BLUECOLOR%[INFO]%RESET% WorkshopID=!WorkshopID!
+echo %BLUECOLOR%[INFO]%RESET% Title=!TitleSanitized!
+
+:: ────────── Download via steamcmd ──────────
+echo %BLUECOLOR%[INFO]%RESET% Downloading Workshop item !WorkshopID! for AppID !APPID!...
+steamcmd\steamcmd.exe +login anonymous +workshop_download_item %APPID% %WorkshopID% +quit > steamcmd\steamcmd.log
 
 :: ────────── Post-download file operations ──────────
 set "SRCFOLDER=steamcmd\steamapps\workshop\content\%APPID%\%WorkshopID%"
