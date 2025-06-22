@@ -73,7 +73,8 @@ echo.
 
 :: ────────── Download via steamcmd ──────────
 echo Downloading Workshop item %WorkshopID% for AppID %APPID%...
-steamcmd +login anonymous +workshop_download_item %APPID% %WorkshopID% +quit > steamcmd.log
+steamcmd\steamcmd.exe +login anonymous +workshop_download_item %APPID% %WorkshopID% +quit > steamcmd.log
+
 
 :: ────────── Post-download file operations ──────────
 set "SRCFOLDER=steamapps\workshop\content\%APPID%\%WorkshopID%"
