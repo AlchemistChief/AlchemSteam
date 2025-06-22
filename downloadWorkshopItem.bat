@@ -27,8 +27,8 @@ setlocal enabledelayedexpansion
 
 :StartPrompt
 :: ────────── Prompt for URL ──────────
-rd /s /q "steamcmd\steamapps\workshop\downloads"
-rd /s /q "steamcmd\steamapps\workshop\temp"
+rd /s /q "steamcmd\steamapps\workshop\downloads" >nul 2>&1
+rd /s /q "steamcmd\steamapps\workshop\temp" >nul 2>&1
 set "URL="
 set /p URL=Enter Steam Workshop Item URL:
 echo.
